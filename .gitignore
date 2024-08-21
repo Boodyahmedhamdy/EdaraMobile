@@ -13,4 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# android studio generated files
 .idea/
+
+# related to draw io
+*.bkp
