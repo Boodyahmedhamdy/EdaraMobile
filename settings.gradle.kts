@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "EdaraMobile"
 include(":app")
- 
