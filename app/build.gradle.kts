@@ -59,7 +59,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.ui.text.google.fonts)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,7 +67,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // google fonts
+    implementation(libs.androidx.ui.text.google.fonts)
 
+    // icons
+    implementation(libs.androidx.material.icons.extended)
+
+    // viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // navigation
     implementation(libs.androidx.navigation.compose)
 }
