@@ -1,12 +1,12 @@
 package com.example.edaramobile.authentication.ui.screens
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -33,17 +33,25 @@ import com.example.edaramobile.R
 import com.example.edaramobile.authentication.ui.components.PasswordEntryTextField
 import com.example.edaramobile.authentication.ui.components.TextEntryTextField
 import com.example.edaramobile.authentication.ui.states.LoginScreenUiState
+import com.example.edaramobile.authentication.utils.extensions.Constants
 
 @Composable
 fun LoginScreen(
     state: LoginScreenUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onUserNameChanged: (newUsername: String) -> Unit = {},
+    onPasswordChanged: (newPassword: String) -> Unit = {},
+    onForgetPasswordClicked: () -> Unit = {},
+    onKeepMeLoggedInClicked: (isLoggedIn: Boolean) -> Unit = {},
+    onSignUpLinkClicked: () -> Unit = {},
+    onLoginButtonClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         // icon
         Icon(
@@ -57,26 +65,40 @@ fun LoginScreen(
             text = stringResource(R.string.welcome_back_we_wish_you_a_day_of_happiness_and_luck)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
         // username field
         TextEntryTextField(
             modifier = Modifier.fillMaxWidth(),
             labelString = "Username",
             value = state.username,
-            onValueChanged = {},
-            leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = "") }
+            onValueChanged = {
+                onUserNameChanged(it)
+            },
+            leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = "") },
+            suffixText = Constants.SUFFIX_USERNAME
+        )
+        // username error
+        Text(
+            state.usernameErrorMessage,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
         // password field
-        // label
         PasswordEntryTextField(
             modifier = Modifier.fillMaxWidth(),
             labelText = "Password",
             value = state.password,
-            onValueChanged = {}
+            onValueChanged = {
+                onPasswordChanged(it)
+            }
+        )
+        // password error
+        Text(
+            state.passwordErrorMessage,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
         )
 
         // forget password
@@ -87,8 +109,8 @@ fun LoginScreen(
             textAlign = TextAlign.Start,
             fontSize = 18.sp,
             modifier = Modifier
+                .clickable { onForgetPasswordClicked() }
                 .fillMaxWidth()
-                .padding(20.dp)
         )
 
         // keep logged in option ?
@@ -97,7 +119,9 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Checkbox(
-                checked = false, onCheckedChange = {}
+                checked = state.isKeepLoggedIn, onCheckedChange = {
+                    onKeepMeLoggedInClicked(it)
+                }
             )
             Text("Keep Me Logged in", style = MaterialTheme.typography.bodyMedium)
         }
@@ -110,20 +134,19 @@ fun LoginScreen(
             Text(text = "Don't have account ?")
             Text(text = "Sign up",
                 color = Color.Blue,
-                textDecoration = TextDecoration.Underline)
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier.clickable { onSignUpLinkClicked() }
+            )
         }
 
         // Login button
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { onLoginButtonClicked() },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
         }
-
-
     }
-
 }
 
 
@@ -137,7 +160,11 @@ private fun LoginScreenPreview() {
         contentAlignment = Alignment.Center
     ) {
         LoginScreen(
-            state = LoginScreenUiState(),
+            state = LoginScreenUiState(
+                username = "boody",
+                usernameErrorMessage = "invalid username",
+                passwordErrorMessage = "Invalid password"
+            ),
             modifier = Modifier.fillMaxSize()
         )
     }
