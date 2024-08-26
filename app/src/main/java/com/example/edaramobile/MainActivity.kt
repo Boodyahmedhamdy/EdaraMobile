@@ -27,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.edaramobile.authentication.ui.navigation.AuthenticationNavHost
 import com.example.edaramobile.data.ProjectEntity
 import com.example.edaramobile.data.ProjectRepository
 import com.example.edaramobile.ui.theme.EdaraMobileTheme
@@ -39,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
+        /*setContent {
             val bottomSheetState = rememberModalBottomSheetState()
             val scope = rememberCoroutineScope()
             var showBottomSheet by remember {
@@ -115,6 +117,15 @@ class MainActivity : ComponentActivity() {
                     }
 
                 }
+            }
+        }*/
+        setContent {
+            val navController = rememberNavController()
+            Scaffold { innerPadding ->
+                AuthenticationNavHost(
+                    navController = navController,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
     }
