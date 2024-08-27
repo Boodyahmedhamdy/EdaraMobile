@@ -5,5 +5,8 @@ data class RegisterScreenUiState(
     val firstName: String = "",
     val lastName: String = "",
     val password: String = "",
-    val confirmedPassword: String = ""
+    val passwordErrorMessage: String = "",
+    val confirmedPassword: String = "",
+    val confirmedPasswordErrorMessage: String = "",
+    val generalErrorMessage: String = ""
 )
