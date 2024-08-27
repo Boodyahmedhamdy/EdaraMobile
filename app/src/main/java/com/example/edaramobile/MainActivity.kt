@@ -121,11 +121,13 @@ class MainActivity : ComponentActivity() {
         }*/
         setContent {
             val navController = rememberNavController()
-            Scaffold { innerPadding ->
-                AuthenticationNavHost(
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
-                )
+            EdaraMobileTheme {
+                Scaffold { innerPadding ->
+                    AuthenticationNavHost(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
             }
         }
     }
