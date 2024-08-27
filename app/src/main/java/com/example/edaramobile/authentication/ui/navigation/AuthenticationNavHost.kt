@@ -23,6 +23,7 @@ fun AuthenticationNavHost(
 
     val viewModel: AuthenticationViewModel = viewModel()
     val loginScreenUiState = viewModel.loginScreenState.collectAsState()
+    val registerScreenUiState = viewModel.registerScreenState.collectAsState()
 
     NavHost(
         navController = navController,
@@ -35,9 +36,9 @@ fun AuthenticationNavHost(
         ) {
             LoginScreen(
                 state = loginScreenUiState.value,
-                onUserNameChanged = { viewModel.setUsernameInLoginScreen(it) },
-                onPasswordChanged = { viewModel.setPasswordInLoginScreen(it) },
-                onKeepMeLoggedInClicked = { viewModel.setIsKeepLoggedInInLoginScreen(it) },
+                onUserNameChanged = { viewModel.updateUsernameInLoginScreen(it) },
+                onPasswordChanged = { viewModel.updatePasswordInLoginScreen(it) },
+                onKeepMeLoggedInClicked = { viewModel.updateIsKeepLoggedInInLoginScreen(it) },
                 onForgetPasswordClicked = { /* navigate to forget password screens */ },
                 onSignUpLinkClicked = { navController.navigate(AuthenticationRoutes.REGISTER_SCREEN.name) },
                 onLoginButtonClicked = { viewModel.login() },
@@ -49,7 +50,18 @@ fun AuthenticationNavHost(
         composable(
             AuthenticationRoutes.REGISTER_SCREEN.name
         ) {
-            RegisterScreen(state = RegisterScreenUiState(), modifier = Modifier.fillMaxSize())
+            RegisterScreen(
+                state = registerScreenUiState.value,
+                onBackArrowClicked = { navController.navigateUp() },
+                onFirstNameChanged = { viewModel.updateFirstNameInRegisterScreen(it) },
+                onLastNameChanged = { viewModel.updateLastNameInRegisterScreen(it) },
+                onUsernameChanged =  { viewModel.updateUsernameInRegisterScreen(it) },
+                onPasswordChanged = { viewModel.updatePasswordInRegisterScreen(it) },
+                onConfirmPasswordChanged = { viewModel.updateConfirmedPasswordInRegisterScreen(it) },
+                onSignInLinkClicked = { navController.navigate(AuthenticationRoutes.LOGIN_SCREEN.name) },
+                onCreateAccountButtonClicked = { viewModel.register() },
+                modifier = Modifier.fillMaxSize().padding(24.dp)
+            )
         }
 
 
