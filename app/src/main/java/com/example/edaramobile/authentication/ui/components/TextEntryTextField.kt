@@ -20,7 +20,8 @@ fun TextEntryTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true,
     suffixText: String = "",
-    hintText: String = ""
+    hintText: String = "",
+    errorText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -32,6 +33,7 @@ fun TextEntryTextField(
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
+        // hint
         Text(text = hintText, modifier = Modifier.alpha(0.7f))
 
         OutlinedTextField(
@@ -43,6 +45,9 @@ fun TextEntryTextField(
             suffix = { Text(suffixText) },
             modifier = Modifier.fillMaxWidth()
         )
+
+        // error message
+        Text(errorText, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
 
     }
 
