@@ -7,6 +7,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
@@ -18,7 +19,8 @@ fun TextEntryTextField(
     onValueChanged: (String) -> Unit = {},
     leadingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true,
-    suffixText: String = ""
+    suffixText: String = "",
+    hintText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -30,6 +32,7 @@ fun TextEntryTextField(
             textAlign = TextAlign.Start,
             modifier = Modifier.fillMaxWidth()
         )
+        Text(text = hintText, modifier = Modifier.alpha(0.7f))
 
         OutlinedTextField(
             value = value,

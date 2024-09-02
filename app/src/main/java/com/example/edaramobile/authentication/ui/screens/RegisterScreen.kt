@@ -111,7 +111,8 @@ fun RegisterScreen(
             onValueChanged = { onUsernameChanged(it) },
             labelString = "Username",
             leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "") },
-            suffixText = Constants.SUFFIX_USERNAME
+            suffixText = Constants.SUFFIX_USERNAME,
+            hintText = "must be at least 3 characters and Unique"
         )
 
         // password
