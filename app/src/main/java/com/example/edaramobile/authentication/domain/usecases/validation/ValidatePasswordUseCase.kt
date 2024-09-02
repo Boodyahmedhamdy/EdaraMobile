@@ -10,6 +10,12 @@ class ValidatePasswordUseCase {
         if(password.length > ValidationConstants.MIN_PASSWORD_LENGTH) {
             return ValidationResult.FailureValidationResult("password must be at most ${ValidationConstants.MAX_PASSWORD_LENGTH} characters")
         }
+        if(password.isBlank()) {
+            return ValidationResult.FailureValidationResult("password can't be Blank")
+        }
+        if(password.isEmpty()) {
+            return ValidationResult.FailureValidationResult("password can't be Empty")
+        }
 
 
         return ValidationResult.SuccessValidationResult
