@@ -11,5 +11,6 @@ data class RegisterScreenUiState(
     val passwordErrorMessage: String = "",
     val confirmedPassword: String = "",
     val confirmedPasswordErrorMessage: String = "",
-    val generalErrorMessage: String = ""
+    val generalErrorMessage: String = "",
+    val registerButtonEnabled: Boolean = true
 )

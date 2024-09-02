@@ -1,14 +1,18 @@
 package com.example.edaramobile.authentication.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.edaramobile.authentication.domain.models.ValidationResult
 import com.example.edaramobile.authentication.domain.usecases.validation.ValidateFirstNameUseCase
 import com.example.edaramobile.authentication.domain.usecases.validation.ValidateLastNameUseCase
+import com.example.edaramobile.authentication.domain.usecases.validation.ValidatePasswordUseCase
 import com.example.edaramobile.authentication.ui.states.LoginScreenUiState
 import com.example.edaramobile.authentication.ui.states.RegisterScreenUiState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
 //    private val validateFirstNameUseCase: ValidateFirstNameUseCase
@@ -81,6 +85,9 @@ class AuthenticationViewModel(
     private fun updateConfirmedPasswordErrorMessageInRegisterScreen(confirmedPasswordErrorMessage: String) {
         _registerScreenState.update { it.copy(confirmedPasswordErrorMessage = confirmedPasswordErrorMessage) }
     }
+    private fun updateRegisterButtonEnabledInRegisterScreen(enabled: Boolean) {
+        _registerScreenState.update { it.copy(registerButtonEnabled = enabled) }
+    }
     private fun updateGeneralErrorMessageInRegisterScreen(generalErrorMessage: String) {
         _registerScreenState.update { it.copy(generalErrorMessage = generalErrorMessage) }
     }
@@ -88,6 +95,11 @@ class AuthenticationViewModel(
     fun register() {
         if(isValidRegisterScreenData()) {
             // register logic
+            viewModelScope.launch {
+                updateRegisterButtonEnabledInRegisterScreen(false)
+                delay(2000) // api call delay simulation
+                updateRegisterButtonEnabledInRegisterScreen(true)
+            }
         }
     }
 
@@ -124,9 +136,37 @@ class AuthenticationViewModel(
         }
     }
 
+    private fun validatePassword(password: String): Boolean {
+        val result = ValidatePasswordUseCase().invoke(password)
+        return when(result) {
+            is ValidationResult.FailureValidationResult -> {
+                updatePasswordErrorMessageInRegisterScreen(result.errorMessage)
+                false
+            }
+            ValidationResult.SuccessValidationResult -> {
+                updatePasswordErrorMessageInRegisterScreen("")
+                true
+            }
+        }
+    }
+
+    // no need to separate in another class where the logic won't extend any more
+    // it is just a string comparison
+    private fun validateConfirmedPassword(password: String, confirmedPassword: String): Boolean {
+        return if(password != confirmedPassword) {
+            updateConfirmedPasswordErrorMessageInRegisterScreen("confirmed password isn't the same as password")
+            false
+        } else {
+            updateConfirmedPasswordErrorMessageInRegisterScreen("")
+            true
+        }
+    }
+
     private fun isValidRegisterScreenData(): Boolean {
         return validateFirstName(registerScreenState.value.firstName)
                 && validateLastName(registerScreenState.value.lastName)
+                && validatePassword(registerScreenState.value.password)
+                && validateConfirmedPassword(password = registerScreenState.value.password, confirmedPassword = registerScreenState.value.confirmedPassword)
 
     }
 
