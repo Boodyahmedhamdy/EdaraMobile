@@ -28,6 +28,7 @@ fun PasswordEntryTextField(
     labelText: String = "",
     value: String = "",
     onValueChanged: (String) -> Unit = {},
+    errorText: String = ""
 ) {
 
     var showPasswordState by remember {
@@ -72,6 +73,8 @@ fun PasswordEntryTextField(
             },
             modifier = Modifier.fillMaxWidth()
         )
+        // error message
+        Text(errorText, color = MaterialTheme.colorScheme.error)
     }
 
 }
