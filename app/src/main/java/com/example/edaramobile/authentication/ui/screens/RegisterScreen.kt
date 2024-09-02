@@ -90,6 +90,7 @@ fun RegisterScreen(
                 value = state.firstName,
                 onValueChanged = { onFirstNameChanged(it) },
                 labelString = "First Name",
+                errorText = state.firstNameErrorMessage,
                 modifier = Modifier
                     .weight(1f)
 
@@ -100,6 +101,7 @@ fun RegisterScreen(
                 value = state.lastName,
                 onValueChanged = { onLastNameChanged(it) },
                 labelString = "Last Name",
+                errorText = state.lastNameErrorMessage,
                 modifier = Modifier
                     .weight(1f)
             )
@@ -112,27 +114,30 @@ fun RegisterScreen(
             labelString = "Username",
             leadingIcon = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "") },
             suffixText = Constants.SUFFIX_USERNAME,
-            hintText = "must be at least 3 characters and Unique"
+            hintText = "must be at least 3 characters and Unique",
+            errorText = state.usernameErrorMessage
         )
 
         // password
         PasswordEntryTextField(
             value = state.password,
             onValueChanged = { onPasswordChanged(it) },
-            labelText = "Password"
+            labelText = "Password",
+            errorText = state.passwordErrorMessage
         )
         //  password error
-        Text(text = state.passwordErrorMessage, color = MaterialTheme.colorScheme.error)
+//        Text(text = state.passwordErrorMessage, color = MaterialTheme.colorScheme.error)
 
 
         // confirm password
         PasswordEntryTextField(
             value = state.confirmedPassword,
             onValueChanged = { onConfirmPasswordChanged(it) },
-            labelText = "Confirm Password"
+            labelText = "Confirm Password",
+            errorText = state.confirmedPasswordErrorMessage
         )
         //  password error
-        Text(text = state.confirmedPasswordErrorMessage, color = MaterialTheme.colorScheme.error)
+//        Text(text = state.confirmedPasswordErrorMessage, color = MaterialTheme.colorScheme.error)
 
         // sign in link
         Row(
