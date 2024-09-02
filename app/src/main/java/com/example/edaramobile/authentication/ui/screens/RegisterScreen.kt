@@ -157,6 +157,7 @@ fun RegisterScreen(
         // create account button
         Button(
             onClick = { onCreateAccountButtonClicked() },
+            enabled = state.registerButtonEnabled,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")
